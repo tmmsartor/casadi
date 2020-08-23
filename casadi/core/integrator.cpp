@@ -1413,9 +1413,6 @@ namespace casadi {
       }
     }
 
-    // Make sure x and ode exist
-    casadi_assert(!de_in[DE_X].is_empty(), "Ill-posed ODE - no state");
-
     // Number of right-hand-sides
     casadi_int nrhs = de_in[DE_X].size2();
 
