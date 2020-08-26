@@ -1414,7 +1414,13 @@ namespace casadi {
     }
 
     // Number of right-hand-sides
-    casadi_int nrhs = de_in[DE_X].size2();
+    casadi_int de_x_nrhs = de_in[DE_X].size2();
+
+    // DE_X 0x0 -> 0x1
+    // Don't fail if there are no states
+    // Quadrature can still depend only on t
+    if (de_in[DE_X].is_empty()) de_x_nrhs = 1;
+
 
     // Make sure consistent number of right-hand-sides
     for (bool b : {true, false}) {
@@ -1424,8 +1430,8 @@ namespace casadi {
         // Number of rows
         casadi_int nr = e.size1();
         // Make sure no change in number of elements
-        casadi_assert(e.numel()==nr*nrhs, "Inconsistent number of rhs");
-        e = reshape(e, nr, nrhs);
+        casadi_assert(e.numel()==nr*de_x_nrhs, "Inconsistent number of rhs");
+        e = reshape(e, nr, de_x_nrhs);
       }
     }
 
